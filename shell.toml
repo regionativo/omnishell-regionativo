@@ -26,6 +26,9 @@ fullWidthNotchMode = "off"
 reserveLayoutSpace = true
 transparentBackground = false
 backgroundOpacity = 1
+# The palette paper behind the drawn background: if the shader isn't showing (displays asleep,
+# wake, reload) the bar falls back to this, not to OmniWM's default (light) fill.
+barFill = "background"
 solidBlackBackground = false
 showItemBackgrounds = false
 showAccentHighlights = true
