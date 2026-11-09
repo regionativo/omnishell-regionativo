@@ -259,6 +259,17 @@ return require("./skin")({
         end
         return cell(ctx, "BT", "On", "purple")
     end,
+    -- Privacy (only shown while something records): a cell naming what is live, red for the
+    -- camera, orange for the microphone alone.
+    privacyBar = function(ctx, m)
+        local cam, mic = false, false
+        for _, indicator in m.indicators do
+            if indicator.key == "camera" then cam = true elseif indicator.key == "microphone" then mic = true end
+        end
+        local label = if cam and mic then "Cam+Mic" elseif cam then "Cam" else "Mic"
+        local color = if cam then "red" else "accent"
+        return cell(ctx, label, "On", color, color)
+    end,
     volumeBar = function(ctx, m)
         if not m.volume then
             return cell(ctx, "Vol", "—", "mutedForeground")
@@ -324,14 +335,15 @@ return require("./skin")({
             ui.box{ w = 3, h = 1 } }
     end,
 
-    -- Sound panel: Default's content plus the shared microphone card.
+    -- Sound panel: Default's content (it brings its own SOUND heading) plus a MICROPHONE box
+    -- drawn like the content's own boxed sections.
     audioPanel = function(ctx, m)
         local audio = require("./audio")
-        local mic = require("./mic").content(ctx, 320)
-        local props = { w = 348, heading("Sound", 320), audio.content(ctx, 320, m) }
+        local props = { w = 348, audio.content(ctx, 320, m) }
+        local mic = require("./mic").content(ctx, 296)
         if mic then
-            props[#props + 1] = ui.box{ w = 320, h = 1.5, fill = "border/0.45" }
-            props[#props + 1] = mic
+            props[#props + 1] = ui.column{ w = 320, pad = 12, gap = 10, radius = 0, center = false,
+                border = "border/0.45", borderWidth = 1, heading("Microphone", 296), mic }
         end
         return panel(props)
     end,

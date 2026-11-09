@@ -4,7 +4,7 @@
 theme = "regionativo"
 leading = ["apple-menu", "app-menu", "omniwm", "workspaces", "scratchpads", "active-window"]
 center = []
-trailing = ["control-center", "system-stats", "wifi", "bluetooth", "volume", "battery", "clock"]
+trailing = ["control-center", "system-stats", "wifi", "bluetooth", "privacy", "volume", "battery", "clock"]
 hiddenBarWidget = "hidden-bar"
 systemStatsWidget = "system-stats"
 

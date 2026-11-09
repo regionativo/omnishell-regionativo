@@ -14,7 +14,8 @@ The bar reads like a drawing's title block: square cells with a mono label over 
 (CPU, Wi-Fi as a row of book spines, Bluetooth, volume, battery), levels coloured from purple
 (calm) through amber and orange to red (critical), and one strong rule along the bottom edge.
 The active workspace is a solid purple block; the others step back to half strength and empty
-ones are struck through in orange. The clock is set in Anton with a mono date, and Control
+ones are struck through in orange. While the camera or microphone is in use, a CAM / MIC cell
+lights up in red or orange. The clock is set in Anton with a mono date, and Control
 Center is a dark tile with a menu mark. Popouts are square frames inset from the window edge, with Anton
 headings over a rule.
 
