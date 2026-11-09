@@ -252,15 +252,12 @@ return require("./skin")({
         local level = math.clamp(state.level or 0, 0, 4)
         return cell(ctx, "Wi-Fi", spines(ctx, level, ramp(level * 25, "high")))
     end,
+    -- Bluetooth: just the radio. ON in purple, OFF in red (device count lives in the panel).
     bluetoothBar = function(ctx, state)
-        if not state.granted then
-            return cell(ctx, "BT", "?", "accent")
+        if state.granted and not state.power then
+            return cell(ctx, "BT", "Off", "red")
         end
-        if not state.power then
-            return cell(ctx, "BT", "Off", "mutedForeground")
-        end
-        return cell(ctx, "BT", if state.connected > 0 then tostring(state.connected) else "On",
-            if state.connected > 0 then "foreground" else "secondaryForeground")
+        return cell(ctx, "BT", "On", "purple")
     end,
     volumeBar = function(ctx, m)
         if not m.volume then
