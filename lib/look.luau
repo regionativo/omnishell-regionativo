@@ -326,7 +326,18 @@ return require("./skin")({
             pill.fill = nil
             pill.hover = HOVER
             pill.opacity = 0.45
+            pill.hoverOpacity = 1
         end
+        -- A Dock-like lift under the pointer. Paint-only (neighbours don't move) and
+        -- kept small: the bar window clips anything taller than the bar.
+        pill.hoverScale = 1.15
+        pill.hoverAnimate = "spring"
+    end,
+    -- App icons inside a workspace take the hover before the pill does, so they get the same
+    -- lift on their own (Default: 1.05).
+    windowIcon = function(icon, glyph, item, style, m)
+        icon.hoverScale = 1.3
+        icon.hoverAnimate = "spring"
     end,
     countBadge = function(label)
         return ui.row{ h = 13, fill = "accent",
