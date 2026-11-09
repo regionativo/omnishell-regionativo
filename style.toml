@@ -1,0 +1,18 @@
+format = 1
+name = "regionativo"
+version = "1.0.0"
+api = 1
+author = "regionativo"
+license = "GPL-2.0-only"
+title = "Regionativo"
+summary = "A drafting sheet for your bar: Anton headlines, mono annotations and flat orange and purple."
+previews = ["bar-left.jpg", "bar-right.jpg"]
+
+[barEffect]
+title = "Drafting Grid"
+values = [
+    { type = "number", title = "Grid strength", min = 0, max = 1, step = 0.05 },
+    { type = "number", title = "Column width", min = 40, max = 240, step = 4 },
+    { type = "number", title = "Rule weight", min = 0, max = 3, step = 0.5 },
+    { type = "number", title = "Tick marks", min = 0, max = 1, step = 0.05 },
+]
