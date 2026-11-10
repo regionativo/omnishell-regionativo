@@ -16,7 +16,7 @@ The bar reads like a drawing's title block: square cells with a mono label over 
 The active workspace is a solid purple block with softly rounded corners, the focused app
 underlined by a short orange rule; the others step back to muted names with their app icons
 kept large and bright, and empty ones are struck through in orange. Floating windows sit
-behind a marker of two overlapping squares. Hovering a workspace lifts it, Dock-style, and the app icon
+behind a marker of two overlapping squares. Hovering a workspace draws a thin orange rule along its bottom, and the app icon
 under the pointer zooms in. While the camera or microphone is in use, a CAM / MIC cell
 lights up in red or orange. The clock is set in Anton with a mono date, and Control
 Center is a dark tile with a menu mark. Popouts are square frames inset from the window edge, with Anton

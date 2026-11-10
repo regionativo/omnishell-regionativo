@@ -326,12 +326,12 @@ return require("./skin")({
             pill.opacity = 1
         else
             pill.fill = nil
-            pill.hover = HOVER
+            pill.hover = HOVER  -- the orange hover rule is added in workspaceGroup
             pill.opacity = 1
         end
-        -- A Dock-like lift under the pointer. Paint-only (neighbours don't move) and
-        -- kept small: the bar window clips anything taller than the bar.
-        pill.hoverScale = 1.15
+        -- No zoom on the block: scale is relative to width, so a full workspace grew
+        -- tens of points and slid under its neighbours. The hover tint marks it, and
+        -- each icon still lifts on its own hover.
         pill.hoverAnimate = "spring"
     end,
     -- The focused window's icon: OmniWM marks it with a glow (accent at 50%, which goes
@@ -361,6 +361,32 @@ return require("./skin")({
             end
         end
         mark(pills)
+        -- Hover: a thin orange rule along the bottom of the hovered workspace (a fill strong
+        -- enough to see was too loud). Tracked in widget state; the focused block is skipped.
+        for i, node in ipairs(pills) do
+            if type(node) == "table" then
+                local id = node.key or i
+                local focused = node.fill == "indigo"
+                -- Every pill always carries the rule (hidden unless hovered): changing only its
+                -- opacity keeps the tree stable, so the icons aren't rebuilt (no flicker). The
+                -- wrapper takes the pointer, so the tint and the handler move up to it.
+                local h = math.max(2, math.round(2 * s))
+                pills[i] = ui.stack{ key = node.key, radius = node.radius, hover = node.hover,
+                    hoverAnimate = node.hoverAnimate,
+                    onHover = function(c, event)
+                        if event.phase == "began" then
+                            c.state.wsHover = id
+                        elseif event.phase == "ended" and c.state.wsHover == id then
+                            c.state.wsHover = nil
+                        end
+                    end,
+                    node,
+                    ui.path{ h = h, align = "bottom", viewBox = { 0, 0, 100, 2 },
+                        d = "M2 0 H98 V2 H2 Z", fill = "orange",
+                        opacity = if not focused and ctx.state.wsHover == id then 1 else 0 } }
+                node.hover = nil
+            end
+        end
         return nil
     end,
     -- App icons inside a workspace take the hover before the pill does, so they get the same
