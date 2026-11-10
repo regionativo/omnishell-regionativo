@@ -34,5 +34,6 @@ showItemBackgrounds = false
 showAccentHighlights = true
 showLabels = true
 hideEmptyWorkspaces = true
+inactiveIconOpacity = 0.85  # icons of unfocused windows stay legible
 deduplicateAppIcons = false
 windowLevel = "status"

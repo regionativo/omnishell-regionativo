@@ -156,7 +156,7 @@ return require("./skin")({
     hover = HOVER,
     hiddenBarHover = "accent/0.15",
     width = 320,
-    size = { text = 13, small = 11, symbol = 14, icon = 18, slot = 22, time = 13, glyph = 17 },
+    size = { text = 13, small = 11, symbol = 14, icon = 24, slot = 28, time = 13, glyph = 17 },
     radius = function()
         return 0
     end,
@@ -307,14 +307,16 @@ return require("./skin")({
         end
         local s = m.scale
         local label = ui.text{ text = caps(workspace.name), font = HEAVY, size = 17 * s,
-            color = if workspace.focused then "#EFE9DCFF" elseif occupied then "foreground" else "mutedForeground" }
+            color = if workspace.focused then "#EFE9DCFF" else "mutedForeground" }
         if not occupied and not workspace.focused then
+            label.opacity = 0.55
             return ui.stack{ label, ui.box{ w = 1, h = 1.5, fill = "accent", grow = 1 } }
         end
         return label
     end,
-    -- The active workspace is one solid purple block (name and its apps); the others step
-    -- back to half strength so "where am I" reads at a glance.
+    -- The active workspace is one solid purple block (name and its apps). The others step
+    -- back through their muted names only: app icons stay at full strength so similar
+    -- icons remain tellable apart.
     workspacePill = function(pill, workspace, style, m, occupied)
         pill.radius = 0
         pill.border = nil
@@ -325,8 +327,7 @@ return require("./skin")({
         else
             pill.fill = nil
             pill.hover = HOVER
-            pill.opacity = 0.45
-            pill.hoverOpacity = 1
+            pill.opacity = 1
         end
         -- A Dock-like lift under the pointer. Paint-only (neighbours don't move) and
         -- kept small: the bar window clips anything taller than the bar.
@@ -336,7 +337,7 @@ return require("./skin")({
     -- App icons inside a workspace take the hover before the pill does, so they get the same
     -- lift on their own (Default: 1.05).
     windowIcon = function(icon, glyph, item, style, m)
-        icon.hoverScale = 1.3
+        icon.hoverScale = 1.12
         icon.hoverAnimate = "spring"
     end,
     countBadge = function(label)
