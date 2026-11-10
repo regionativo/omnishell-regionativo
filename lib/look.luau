@@ -318,7 +318,7 @@ return require("./skin")({
     -- back through their muted names only: app icons stay at full strength so similar
     -- icons remain tellable apart.
     workspacePill = function(pill, workspace, style, m, occupied)
-        pill.radius = 0
+        pill.radius = 5 * m.scale  -- soft corners on the purple block (and the hover fill)
         pill.border = nil
         if workspace.focused then
             pill.fill = "indigo"
@@ -334,11 +334,60 @@ return require("./skin")({
         pill.hoverScale = 1.15
         pill.hoverAnimate = "spring"
     end,
+    -- The focused window's icon: OmniWM marks it with a glow (accent at 50%, which goes
+    -- lavender over the purple block), set after windowIcon and workspacePill run. Once the
+    -- pills are built, swap the glow for a short orange rule under the icon, like the rule
+    -- under a heading. Returns nil: the stock layout is kept.
+    workspaceGroup = function(ctx, pills, cells, style, m)
+        local s = m.scale
+        local function mark(node)
+            local hit = false
+            for _, child in ipairs(node) do
+                if type(child) == "table" then
+                    if child.shadow ~= nil and child.shadowRadius ~= nil then
+                        child.shadow = nil
+                        child.shadowRadius = nil
+                        hit = true
+                    else
+                        mark(child)
+                    end
+                end
+            end
+            if hit then
+                -- a short orange rule under the icon, nearly its full width
+                local h = math.max(2, math.round(2.5 * s))
+                node[#node + 1] = ui.box{ align = "bottom", dy = 0,
+                    w = math.round(m.icon * 0.85), h = h, radius = h / 2, fill = "orange" }
+            end
+        end
+        mark(pills)
+        return nil
+    end,
     -- App icons inside a workspace take the hover before the pill does, so they get the same
     -- lift on their own (Default: 1.05).
     windowIcon = function(icon, glyph, item, style, m)
         icon.hoverScale = 1.12
         icon.hoverAnimate = "spring"
+    end,
+    -- Floating windows: the stock marker is a thin grey SF symbol. Here it is two overlapping
+    -- rounded squares in the style's muted cream, the front one solid-edged, sized to sit with
+    -- the app icons that follow it.
+    floatingGroup = function(icons, style, m)
+        local s = m.scale
+        local size = math.round(m.icon * 0.42)
+        local edge = math.max(1.5, 1.5 * s)
+        local off = math.round(size * 0.35)
+        local marker = ui.stack{ w = size + off, h = size + off,
+            ui.box{ align = "topTrailing", w = size, h = size, radius = 3 * s,
+                border = "mutedForeground", borderWidth = edge },
+            ui.box{ align = "bottomLeading", w = size, h = size, radius = 3 * s,
+                fill = "background", border = "secondaryForeground", borderWidth = edge } }
+        local gap = math.round(3 * s)
+        local row = { gap = gap, ui.box{ w = 2 * s, h = 1 }, marker }
+        for _, icon in ipairs(icons) do
+            row[#row + 1] = icon
+        end
+        return ui.row(row), 2 * s + size + off + #icons * m.slot + (#icons + 1) * gap
     end,
     countBadge = function(label)
         return ui.row{ h = 13, fill = "accent",
